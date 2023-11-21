@@ -1,0 +1,8 @@
+
+///////////////////////////////////////////PRODUIT//////////////////////////////////////////////////
+
+Notez que cette version utilise deux pointeurs p1 et p2 pour parcourir les lignes de m1 et les colonnes de m2,
+respectivement. Les pointeurs sont déplacés en tandem jusqu'à ce que l'un des deux pointeurs soit nul.
+Si les indices de colonne de p1 et de ligne de p2 sont égaux, alors la valeur s est mise à jour.
+ Après avoir parcouru toutes les valeurs non nulles de la ligne et de la colonne, la valeur de 
+ s est ajoutée à la matrice résultante m3.

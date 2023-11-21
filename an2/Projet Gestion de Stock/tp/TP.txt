@@ -1,0 +1,142 @@
+
+									:LE ROLE DES ATTRIBUTS A CHAQUE TABLE:
+									::::::::::::::::::::::::::::::::::::::
+	Table "Articles":
+
+id_article (clé primaire) : un identifiant unique pour chaque article, utilisé pour référencer l'article dans d'autres tables.
+nom : le nom de l'article.
+description : une description détaillée de l'article.
+cout : le coût unitaire de l'article pour l'entreprise.
+prix_vent
+quantite_stock : le nombre d'articles en stock.
+date_expiration : la date d'expiration de l'article (si applicable).
+id_emplacement : l'identifiant de l'emplacement où l'article est stocké dans le magasin ou l'entrepôt.
+id_categorie : l'identifiant de la catégorie à laquelle appartient l'article. Cela peut aider à organiser les articles dans les rapports ou les recherches.
+::::::::::::::::::::::::::::::::::::
+Table "Categories_articles":
+
+id_categorie (clé primaire) : entier (integer) : identifiant unique pour chaque catégorie d'article
+nom : texte (text) : le nom de la catégorie d'article
+description : texte (text) : une description de la catégorie d'article
+
+::::::::::::::::::::::::::::::::::::
+Table "Emplacements":
+
+id_emplacement (clé primaire) : entier (integer) - un identifiant unique pour chaque emplacement
+nom : texte (text) - le nom de l'emplacement
+description : texte (text) - une brève description de l'emplacement
+capacite_stockage : entier (integer) - la capacité de stockage de l'emplacement, c'est-à-dire le nombre maximum d'articles pouvant être stockés dans cet emplacement.
+::::::::::::::::::::::::::::::::::::
+Table "Commandes":
+
+id_commande : identifiant unique de la commande.
+date_commande : la date à laquelle la commande a été passée.
+date_livraison_prevue : la date prévue pour la livraison de la commande.
+statut : le statut actuel de la commande (en attente, en cours, livrée, etc.).
+id_fournisseur : l'identifiant du fournisseur auprès duquel la commande a été passée (clé étrangère faisant référence à la table Fournisseurs).
+::::::::::::::::::::::::::::::::::::
+Table "Details_commande":
+
+id_detail (clé primaire) : entier (integer)
+id_commande (clé étrangère vers la table Commandes) : entier (integer)
+id_article (clé étrangère vers la table Articles) : entier (integer)
+quantite_commandee : entier (integer)
+cout_unitaire : décimal (decimal)
+prix_unitaire : décimal (decimal)
+::::::::::::::::::::::::::::::::::::
+Table "Fournisseurs":
+
+id_fournisseur : clé primaire, cet attribut identifie de manière unique chaque fournisseur dans la table.
+nom_entreprise : le nom de l'entreprise du fournisseur.
+adresse : l'adresse de l'entreprise du fournisseur.
+telephone : le numéro de téléphone de l'entreprise du fournisseur.
+fax : le numéro de fax de l'entreprise du fournisseur.
+courriel : l'adresse e-mail de l'entreprise du fournisseur.
+contact_principal : le nom du contact principal pour ce fournisseur.
+::::::::::::::::::::::::::::::::::::
+Table "Livraisons":
+
+"id_livraison" est un identifiant unique pour chaque livraison enregistrée dans la table.
+"date_livraison" représente la date à laquelle la livraison a été effectuée.
+"id_fournisseur" est une clé étrangère faisant référence à un enregistrement dans la table "Fournisseurs", pour indiquer quel fournisseur a effectué la livraison.
+"id_transporteur" est un identifiant qui peut faire référence à un enregistrement dans une autre table pour indiquer quelle entreprise de transport a été utilisée pour la livraison.
+::::::::::::::::::::::::::::::::::::
+Table "Details_livraison":
+
+id_detail (clé primaire) : identifiant unique pour chaque détail de livraison.
+id_livraison (clé étrangère vers la table Livraisons) : identifiant de la livraison à laquelle le détail appartient.
+id_article (clé étrangère vers la table Articles) : identifiant de l'article livré dans le détail.
+quantite_livree : quantité d'articles livrés dans le détail.
+cout_unitaire : coût unitaire de l'article livré dans le détail.
+prix_unitaire : prix unitaire de l'article livré dans le détail.
+::::::::::::::::::::::::::::::::::::
+Table "Transactions":
+
+id_transaction : identifiant unique de la transaction (clé primaire).
+date_transaction : date à laquelle la transaction a été effectuée.
+id_article : identifiant de l'article concerné par la transaction (clé étrangère vers la table Articles).
+type_transaction : indique le type de la transaction effectuée : entrée, sortie ou transfert.
+::::::::::::::::::::::::::::::::::::
+Table "Expeditions":
+
+id_expedition : identifiant unique de l'expédition (clé primaire)
+date_expedition : date d'expédition de la commande
+id_commande : identifiant de la commande expédiée (clé étrangère vers la table Commandes)
+id_livraison : identifiant de la livraison associée à cette expédition (clé étrangère vers la table Livraisons)
+id_client : identifiant du client ayant passé la commande (clé étrangère vers la table Clients)
+adresse_livraison : adresse de livraison de la commande
+id_transporteur : identifiant du transporteur chargé de l'expédition (clé étrangère vers la table Transporteurs)
+cout_expedition : coût total de l'expédition
+statut_expedition : statut de l'expédition (par exemple "en attente", "expédié", "livré", etc.)
+::::::::::::::::::::::::::::::::::::
+Table "Transporteurs":
+
+id_transporteur (clé primaire) : un entier identifiant de manière unique chaque transporteur dans la table.
+nom_transporteur : une chaîne de caractères représentant le nom du transporteur.
+adresse : une chaîne de caractères représentant l'adresse du transporteur.
+telephone : une chaîne de caractères représentant le numéro de téléphone du transporteur.
+frais_transporteur : un nombre décimal représentant les frais facturés par le transporteur pour l'expédition.
+types_transport_proposes : une chaîne de caractères représentant les différents types de transport proposés par le transporteur.
+::::::::::::::::::::::::::::::::::::
+Table "Clients":
+
+id_client : un entier qui sert de clé primaire pour identifier de manière unique chaque client dans la table
+nom : une chaîne de caractères qui stocke le nom du client
+adresse : une chaîne de caractères qui stocke l'adresse du client
+telephone : une chaîne de caractères qui stocke le numéro de téléphone du client
+::::::::::::::::::::::::::::::::::::
+Table "Utilisateurs":
+
+id_utilisateur : un entier qui sert de clé primaire pour la table.
+nom : une chaîne de caractères qui contient le nom de l'utilisateur.
+courriel : une chaîne de caractères qui contient l'adresse e-mail de l'utilisateur.
+mot_de_passe : une chaîne de caractères qui contient le mot de passe de l'utilisateur (stocké de manière sécurisée).
+id_role : un entier qui sert de clé étrangère vers la table "Rôles", afin de déterminer les autorisations et les privilèges de l'utilisateur.
+::::::::::::::::::::::::::::::::::::
+Table "Rôles":
+
+id_role (clé primaire): un entier auto-incrémenté pour identifier de manière unique chaque rôle dans la table.
+nom: une chaîne de caractères pour le nom du rôle (par exemple, "Administrateur", "Gestionnaire", "Employé", etc.).
+::::::::::::::::::::::::::::::::::::
+Table "Historique de stock":
+
+id Historique_de_stock: identifiant unique de chaque enregistrement dans la table
+id_article: clé étrangère qui fait référence à l'article concerné par l'entrée ou la sortie de stock
+quantite: la quantité de l'article entrée ou sortie lors de l'opération de stock
+type: indique s'il s'agit d'une entrée, d'une sortie ou d'un ajustement de stock
+date: la date à laquelle l'opération de stock a été effectuée
+::::::::::::::::::::::::::::::::::::
+Table "Alertes de stock":
+
+id Alertes_de_stock: identifiant unique de l'alerte de stock, auto-incrémenté
+id_article: identifiant de l'article concerné par l'alerte de stock, faisant référence à la table Articles
+seuil_alerte: seuil de quantité d'articles en stock à partir duquel une alerte de stock doit être émise
+date_alerte: date à laquelle l'alerte de stock a été émise
+::::::::::::::::::::::::::::::::::::
+Table "Paramètres de stock":
+
+id_Paramètres_stock : Identifiant unique pour chaque paramètre de stock.
+seuil_commande : Seuil de commande pour l'article. Lorsque le stock atteint ce seuil, une commande de réapprovisionnement est passée.
+seuil_alerte : Seuil d'alerte pour l'article. Lorsque le stock atteint ce seuil, une alerte est déclenchée pour informer les utilisateurs qu'il est temps de passer une commande de réapprovisionnement.
+taux_rotation : Taux de rotation des stocks pour l'article. Cela indique le nombre de fois que le stock est vendu et remplacé pendant une période donnée. Il est utilisé pour déterminer le montant du stock à maintenir en réserve.
+id_article : L'identifiant unique de l'article pour lequel les paramètres de stock sont définis (clé étrangère faisant référence à la table Articles).

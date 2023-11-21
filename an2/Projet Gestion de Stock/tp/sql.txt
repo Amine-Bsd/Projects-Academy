@@ -1,0 +1,167 @@
+CREATE TABLE Categorie_article(
+   Id_Categorie_article INT,
+   nom VARCHAR(50),
+   description VARCHAR(50),
+   PRIMARY KEY(Id_Categorie_article)
+);
+
+CREATE TABLE Emplacement(
+   Id_Emplacement INT,
+   description VARCHAR(50),
+   capacite_stockage INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(Id_Emplacement)
+);
+
+CREATE TABLE Fournisseur(
+   Id_Fournisseur INT,
+   nom_entreprise VARCHAR(50),
+   adresse VARCHAR(50),
+   telephone VARCHAR(50),
+   fax VARCHAR(50),
+   courriel VARCHAR(50),
+   contact_principal VARCHAR(50),
+   PRIMARY KEY(Id_Fournisseur)
+);
+
+CREATE TABLE Transaction(
+   Id_Transaction INT,
+   type_transaction VARCHAR(50),
+   PRIMARY KEY(Id_Transaction)
+);
+
+CREATE TABLE Transporteur(
+   Id_Transporteur INT,
+   nom_transporteur VARCHAR(50),
+   adresse VARCHAR(50),
+   telephone VARCHAR(50),
+   frais_transporteur DECIMAL(15,2),
+   types_transport_proposes VARCHAR(50),
+   PRIMARY KEY(Id_Transporteur)
+);
+
+CREATE TABLE Client(
+   Id_Client INT,
+   adresse VARCHAR(50),
+   telephone VARCHAR(50),
+   nom VARCHAR(50),
+   PRIMARY KEY(Id_Client)
+);
+
+CREATE TABLE Role(
+   Id_Role INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(Id_Role)
+);
+
+CREATE TABLE Article(
+   Id_Article INT,
+   nom VARCHAR(50),
+   code_produit VARCHAR(50),
+   description VARCHAR(50),
+   cout DECIMAL(15,2),
+   prix_vente DECIMAL(15,2),
+   quantite_stock INT,
+   date_expiration DATE,
+   Id_Categorie_article INT NOT NULL,
+   Id_Emplacement INT NOT NULL,
+   PRIMARY KEY(Id_Article),
+   FOREIGN KEY(Id_Categorie_article) REFERENCES Categorie_article(Id_Categorie_article),
+   FOREIGN KEY(Id_Emplacement) REFERENCES Emplacement(Id_Emplacement)
+);
+
+CREATE TABLE Commande(
+   Id_Commande INT,
+   date_commande DATE,
+   date_livraison_prevue DATE,
+   statut VARCHAR(50),
+   Id_Fournisseur INT NOT NULL,
+   PRIMARY KEY(Id_Commande),
+   FOREIGN KEY(Id_Fournisseur) REFERENCES Fournisseur(Id_Fournisseur)
+);
+
+CREATE TABLE Details_commande(
+   Id_Details_commande INT,
+   quantite_commandee INT,
+   cout_unitaire DECIMAL(15,2),
+   prix_unitaire DECIMAL(15,2),
+   Id_Commande INT NOT NULL,
+   Id_Article INT NOT NULL,
+   PRIMARY KEY(Id_Details_commande),
+   FOREIGN KEY(Id_Commande) REFERENCES Commande(Id_Commande),
+   FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
+);
+
+CREATE TABLE Livraison(
+   Id_Livraison INT,
+   date_livraison DATE,
+   Id_Transporteur INT NOT NULL,
+   Id_Fournisseur INT NOT NULL,
+   PRIMARY KEY(Id_Livraison),
+   FOREIGN KEY(Id_Transporteur) REFERENCES Transporteur(Id_Transporteur),
+   FOREIGN KEY(Id_Fournisseur) REFERENCES Fournisseur(Id_Fournisseur)
+);
+
+CREATE TABLE Details_livraison(
+   Id_Details_livraison INT,
+   quantite_livree INT,
+   cout_unitaire DECIMAL(15,2),
+   prix_unitaire DECIMAL(15,2),
+   Id_Article INT NOT NULL,
+   Id_Livraison INT NOT NULL,
+   PRIMARY KEY(Id_Details_livraison),
+   FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article),
+   FOREIGN KEY(Id_Livraison) REFERENCES Livraison(Id_Livraison)
+);
+
+CREATE TABLE Expedition(
+   Id_Expedition INT,
+   adresse_livraison VARCHAR(50),
+   statut_expedition VARCHAR(50),
+   cout_expedition DECIMAL(15,2),
+   Id_Client INT NOT NULL,
+   Id_Livraison INT NOT NULL,
+   Id_Commande INT NOT NULL,
+   PRIMARY KEY(Id_Expedition),
+   FOREIGN KEY(Id_Client) REFERENCES Client(Id_Client),
+   FOREIGN KEY(Id_Livraison) REFERENCES Livraison(Id_Livraison),
+   FOREIGN KEY(Id_Commande) REFERENCES Commande(Id_Commande)
+);
+
+CREATE TABLE Utilisateur(
+   Id_Utilisateur INT,
+   nom VARCHAR(50),
+   courriel VARCHAR(50),
+   mot_de_passe VARCHAR(50),
+   Id_Role INT NOT NULL,
+   PRIMARY KEY(Id_Utilisateur),
+   FOREIGN KEY(Id_Role) REFERENCES Role(Id_Role)
+);
+
+CREATE TABLE Historique_de_stock(
+   Id_Historique_de_stock INT,
+   type VARCHAR(50),
+   datee DATE,
+   Id_Article INT NOT NULL,
+   PRIMARY KEY(Id_Historique_de_stock),
+   FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
+);
+
+CREATE TABLE Alertes_de_stock(
+   Id_Alertes_de_stock INT,
+   seuil_alerte INT,
+   date_alerte DATE,
+   Id_Article INT NOT NULL,
+   PRIMARY KEY(Id_Alertes_de_stock),
+   FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
+);
+
+CREATE TABLE Paramètres_de_stock(
+   Id_Paramètres_de_stock INT,
+   seuil_commande INT,
+   seuil_alerte INT,
+   taux_rotation INT,
+   Id_Article INT NOT NULL,
+   PRIMARY KEY(Id_Paramètres_de_stock),
+   FOREIGN KEY(Id_Article) REFERENCES Article(Id_Article)
+);
